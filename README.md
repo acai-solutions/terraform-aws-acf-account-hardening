@@ -220,4 +220,4 @@ See [LICENSE][license-url] for full details.
 [acai-provisio-url]: https://acai.gmbh/solutions/provisio
 [license-url]: ./LICENSE.md
 [acai-account-cache-url]: https://github.com/acai-solutions/terraform-aws-acf-account-cache
-[acai-account-cache-query-url]: https://github.com/acai-solutions/terraform-aws-acf-account-cache/blob/main/wiki.md
+[acai-account-cache-query-url]: https://docs.acai.gmbh/json-engine/account-query/
