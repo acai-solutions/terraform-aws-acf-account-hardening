@@ -1,0 +1,11 @@
+resource "aws_ebs_encryption_by_default" "default_ebs_encryption_${lower(replace(primary_region, "-", "_"))}" {
+  enabled  = true
+  provider = aws
+}
+
+%{ for region in non_primary_regions ~}
+resource "aws_ebs_encryption_by_default" "default_ebs_encryption_${lower(replace(region, "-", "_"))}" {
+  enabled  = true
+  provider = aws.${lower(replace(region, "-", "_"))}
+}
+%{ endfor ~}
