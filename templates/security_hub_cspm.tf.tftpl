@@ -1,0 +1,16 @@
+resource "aws_securityhub_account" "security_hub_${lower(replace(primary_region, "-", "_"))}" {
+  enable_default_standards  = ${aws_security_hub_enable_default_standards}
+  auto_enable_controls      = ${aws_security_hub_auto_enable_controls}
+  control_finding_generator = "${aws_security_hub_control_finding_generator}"
+}
+
+%{ for region in secondary_regions ~}
+resource "aws_securityhub_account" "security_hub_${lower(replace(region, "-", "_"))}" {
+  enable_default_standards  = ${aws_security_hub_enable_default_standards}
+  auto_enable_controls      = ${aws_security_hub_auto_enable_controls}
+  control_finding_generator = "${aws_security_hub_control_finding_generator}"
+
+  provider = aws.${lower(replace(region, "-", "_"))}
+}
+
+%{ endfor ~}

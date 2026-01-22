@@ -1,0 +1,12 @@
+resource "aws_guardduty_detector" "gd_detector_${lower(replace(primary_region, "-", "_"))}" {
+  enable = true
+}
+
+%{ for region in secondary_regions ~}
+resource "aws_guardduty_detector" "gd_detector_${lower(replace(region, "-", "_"))}" {
+  enable = true
+
+  provider = aws.${lower(replace(region, "-", "_"))}
+}
+
+%{ endfor ~}

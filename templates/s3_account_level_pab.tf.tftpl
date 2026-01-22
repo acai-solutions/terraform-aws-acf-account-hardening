@@ -1,6 +1,18 @@
-resource "aws_s3_account_public_access_block" "s3_account_level_pab_${lower(replace(primary_region, "-", "_"))}" {
+resource "aws_s3_account_public_access_block" "s3_account_level_pab_${primary_region_formatted}" {
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
+
+%{ for region in secondary_regions ~}
+resource "aws_s3_account_public_access_block" "s3_account_level_pab_${lower(replace(region, "-", "_"))}" {
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  provider = aws.${lower(replace(region, "-", "_"))}
+}
+
+%{ endfor ~}
