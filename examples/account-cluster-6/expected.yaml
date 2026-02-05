@@ -1,0 +1,53 @@
+# Expected validation manifest for account-cluster-6: Sandbox/Dev Accounts
+# Use Case: Development and sandbox accounts with relaxed security
+
+use_case: "Sandbox/Dev Accounts"
+description: |
+  Development and sandbox accounts with relaxed security.
+  Minimal features enabled, single region.
+  Extended password age (180 days), no GuardDuty (cost saving for dev).
+
+expected_files:
+  - main.tf
+  - aws_account_password_policy.tf
+  - ebs_encryption.tf
+  - import.part which is empty
+
+excluded_files:
+  - guardduty.tf
+  - security_hub_cspm.tf
+  - s3_account_level_pab.tf
+
+validations:
+  password_policy:
+    enabled: true
+    expectations:
+      - "password policy exists but with relaxed settings"
+      - "extended max password age (around 180 days)"
+      - "basic password requirements"
+
+  ebs_encryption:
+    enabled: true
+    expectations:
+      - "EBS encryption enabled (security baseline)"
+      - "single or minimal region coverage"
+
+  guardduty:
+    enabled: false
+    reason: "Cost saving for development/sandbox accounts"
+
+  s3_public_access_block:
+    enabled: false
+    reason: "Developers may need S3 public access for testing"
+
+  security_hub_cspm:
+    enabled: false
+    reason: "Not required for sandbox/dev accounts"
+
+  regions:
+    expected_regions:
+      - eu-central-1
+    expectations:
+      - "single region deployment for dev/sandbox"
+      - "minimal infrastructure footprint"
+      - "cost-optimized configuration"

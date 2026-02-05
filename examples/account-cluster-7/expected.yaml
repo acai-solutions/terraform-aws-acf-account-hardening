@@ -1,0 +1,66 @@
+# Expected validation manifest for account-cluster-7: Production High-Security
+# Use Case: Production accounts requiring maximum security
+
+use_case: "Production High-Security"
+description: |
+  Production accounts requiring maximum security.
+  All features enabled with strictest settings.
+  Short password age (60 days), 10 password reuse prevention.
+  All GuardDuty protections, Security Hub with default standards.
+
+expected_files:
+  - main.tf
+  - aws_account_password_policy.tf
+  - ebs_encryption.tf
+  - guardduty.tf
+  - s3_account_level_pab.tf
+  - security_hub_cspm.tf
+  - import.part which is empty
+
+validations:
+  password_policy:
+    enabled: true
+    expectations:
+      - "strict password policy for production"
+      - "short max password age (60 days or less)"
+      - "high password reuse prevention (10 or more)"
+      - "minimum password length 16 or more"
+      - "all character type requirements enabled"
+
+  ebs_encryption:
+    enabled: true
+    expectations:
+      - "EBS encryption mandatory in all regions"
+      - "multi-region coverage"
+
+  guardduty:
+    enabled: true
+    expectations:
+      - "all GuardDuty protection features enabled"
+      - "S3 log monitoring enabled"
+      - "Kubernetes audit log monitoring enabled"
+      - "EBS malware protection enabled"
+      - "RDS protection may be enabled"
+
+  s3_public_access_block:
+    enabled: true
+    expectations:
+      - "strict S3 public access block"
+      - "all blocking options enabled"
+
+  security_hub_cspm:
+    enabled: true
+    expectations:
+      - "Security Hub with default standards enabled"
+      - "enable_default_standards should be true"
+      - "auto_enable_controls should be true"
+
+  regions:
+    expected_regions:
+      - eu-central-1
+      - eu-west-1
+      - us-east-1
+      - us-west-2
+    expectations:
+      - "multi-region for disaster recovery"
+      - "EU and US coverage for production redundancy"

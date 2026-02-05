@@ -1,0 +1,81 @@
+# Expected validation manifest for account-cluster-11: Secondary Regions Override
+# Use Case: Different features require different regional coverage
+
+use_case: "Secondary Regions Override"
+description: |
+  Demonstrates the secondary_regions_override feature where different security
+  features have different regional coverage based on compliance, cost, or
+  operational requirements.
+  
+  Configuration:
+  - Default regions: eu-central-1, eu-west-1, us-east-1
+  - EBS encryption: EU only (eu-central-1, eu-west-1, eu-north-1) - GDPR compliance
+  - GuardDuty: Extended to APAC (adds ap-southeast-1, ap-northeast-1)
+  - Security Hub: Primary region only (eu-central-1) - cost optimization
+
+expected_files:
+  - main.tf
+  - aws_account_password_policy.tf
+  - ebs_encryption.tf
+  - guardduty.tf
+  - s3_account_level_pab.tf
+  - security_hub_cspm.tf
+
+validations:
+  password_policy:
+    enabled: true
+    expectations:
+      - "password policy resource exists"
+      - "standard enterprise settings"
+
+  ebs_encryption:
+    enabled: true
+    expectations:
+      - "EBS encryption enabled"
+      - "configured for EU regions only"
+      - "should include eu-central-1, eu-west-1, eu-north-1"
+      - "should NOT include us-east-1 (GDPR compliance)"
+      - "should NOT include any ap- regions"
+      - "uses secondary_regions_override to limit to EU"
+
+  guardduty:
+    enabled: true
+    expectations:
+      - "GuardDuty detector configured"
+      - "extended to APAC regions via secondary_regions_override"
+      - "should include eu-central-1, eu-west-1, us-east-1"
+      - "should include ap-southeast-1, ap-northeast-1"
+      - "at least 5 regions configured"
+      - "more regions than default target_regions"
+
+  s3_public_access_block:
+    enabled: true
+    expectations:
+      - "S3 public access block enabled"
+      - "uses default regions (no override)"
+
+  security_hub_cspm:
+    enabled: true
+    expectations:
+      - "Security Hub enabled"
+      - "configured for primary region only (eu-central-1)"
+      - "secondary_regions_override is empty array"
+      - "should NOT include eu-west-1 or us-east-1"
+      - "single region deployment for cost optimization"
+
+  regions:
+    feature_specific_regions:
+      ebs_encryption:
+        expected: ["eu-central-1", "eu-west-1", "eu-north-1"]
+        excluded: ["us-east-1", "ap-southeast-1", "ap-northeast-1"]
+      guardduty:
+        expected: ["eu-central-1", "eu-west-1", "us-east-1", "ap-southeast-1", "ap-northeast-1"]
+      security_hub_cspm:
+        expected: ["eu-central-1"]
+        excluded: ["eu-west-1", "us-east-1"]
+    expectations:
+      - "different features have different regional coverage"
+      - "EBS encryption limited to EU only"
+      - "GuardDuty extended to Asia-Pacific"
+      - "Security Hub in primary region only"
+      - "demonstrates secondary_regions_override flexibility"

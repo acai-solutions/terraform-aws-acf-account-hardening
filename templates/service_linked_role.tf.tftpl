@@ -1,0 +1,19 @@
+# https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_aws-services-that-work-with-iam.html
+
+locals {
+  excluded_accounts_service_linked_role = [
+%{ for i, account_id in excluded_accounts ~}
+    "${account_id}",
+%{ endfor }  ]
+}
+
+%{ for service in service_names ~}
+resource "aws_iam_service_linked_role" "${replace(service, ".", "_")}" {
+  count = contains(local.excluded_accounts_service_linked_role, local.current_account_id) ? 0 : 1
+
+  aws_service_name = "${service}"
+
+  tags = local.tags
+}
+
+%{ endfor ~}

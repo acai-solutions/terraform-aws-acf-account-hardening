@@ -1,11 +1,18 @@
-resource "aws_ebs_encryption_by_default" "default_ebs_encryption_${lower(replace(primary_region, "-", "_"))}" {
-  enabled  = true
-  provider = aws
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ebs_encryption_by_default
+
+locals {
+  excluded_accounts_ebs_encryption = [
+%{ for i, account_id in excluded_accounts ~}
+    "${account_id}",
+%{ endfor }  ]
 }
 
-%{ for region in non_primary_regions ~}
+%{ for region in all_regions ~}
 resource "aws_ebs_encryption_by_default" "default_ebs_encryption_${lower(replace(region, "-", "_"))}" {
+  count    = contains(local.excluded_accounts_ebs_encryption, local.current_account_id) ? 0 : 1
+
+  region   = "${region}"
   enabled  = true
-  provider = aws.${lower(replace(region, "-", "_"))}
 }
+
 %{ endfor ~}

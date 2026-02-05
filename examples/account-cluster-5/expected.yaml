@@ -1,0 +1,75 @@
+# Expected validation manifest for account-cluster-5: Global Multi-Region
+# Use Case: Global organization with presence in all major AWS regions
+
+use_case: "Global Multi-Region"
+description: |
+  Global organization with presence in all major AWS regions.
+  All commercial AWS regions covered.
+  Full security coverage including AWS Support Access Role.
+
+expected_files:
+  - main.tf
+  - aws_account_password_policy.tf
+  - ebs_encryption.tf
+  - guardduty.tf
+  - s3_account_level_pab.tf
+  - security_hub_cspm.tf
+  - aws_support_access_role.tf
+  - import.part which is empty
+
+validations:
+  password_policy:
+    enabled: true
+    expectations:
+      - "password policy resource exists"
+      - "enterprise-grade password requirements"
+
+  ebs_encryption:
+    enabled: true
+    expectations:
+      - "EBS encryption enabled globally"
+      - "covers all major commercial regions"
+      - "at least 8-10 regions configured"
+      - "includes EU, US, APAC regions"
+
+  guardduty:
+    enabled: true
+    expectations:
+      - "GuardDuty detector configured globally"
+      - "multi-region coverage"
+      - "full protection features"
+
+  s3_public_access_block:
+    enabled: true
+    expectations:
+      - "S3 public access block enabled"
+
+  security_hub_cspm:
+    enabled: true
+    expectations:
+      - "Security Hub enabled globally"
+      - "multi-region aggregation"
+
+  aws_support_access_role:
+    enabled: true
+    expectations:
+      - "AWS Support access role created"
+      - "allows AWS Support to access account"
+      - "trust policy for AWS Support"
+
+  regions:
+    expected_regions:
+      - eu-central-1
+      - eu-west-1
+      - eu-west-2
+      - eu-north-1
+      - us-east-1
+      - us-west-2
+      - ap-southeast-1
+      - ap-northeast-1
+      - ap-south-1
+      - sa-east-1
+    expectations:
+      - "global deployment across all major regions"
+      - "at least 8 regions configured"
+      - "EU, US, APAC, and SA coverage"

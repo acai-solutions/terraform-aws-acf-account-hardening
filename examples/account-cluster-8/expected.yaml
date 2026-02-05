@@ -1,0 +1,71 @@
+# Expected validation manifest for account-cluster-8: PCI-DSS Compliant
+# Use Case: Accounts processing payment card data
+
+use_case: "PCI-DSS Compliant"
+description: |
+  Accounts processing payment card data.
+  PCI-DSS compliant password policy (12 chars minimum, 90 days max age).
+  All encryption features, full GuardDuty protection.
+  Security Hub default standards enabled, service linked roles for compliance services.
+
+expected_files:
+  - main.tf
+  - aws_account_password_policy.tf
+  - aws_support_access_role.tf
+  - ebs_encryption.tf
+  - guardduty.tf
+  - s3_account_level_pab.tf
+  - security_hub_cspm.tf
+  - service_linked_role.tf
+  - import.part which is empty
+
+validations:
+  password_policy:
+    enabled: true
+    expectations:
+      - "PCI-DSS compliant password policy"
+      - "minimum password length at least 12 characters"
+      - "max password age 90 days or less"
+      - "password reuse prevention"
+      - "all character type requirements enabled"
+
+  ebs_encryption:
+    enabled: true
+    expectations:
+      - "EBS encryption enabled (PCI-DSS requirement)"
+      - "encryption at rest mandatory"
+
+  guardduty:
+    enabled: true
+    expectations:
+      - "GuardDuty enabled for threat detection"
+      - "full protection features enabled"
+      - "continuous monitoring for PCI compliance"
+
+  s3_public_access_block:
+    enabled: true
+    expectations:
+      - "S3 public access block enabled"
+      - "prevents accidental data exposure"
+
+  security_hub_cspm:
+    enabled: true
+    expectations:
+      - "Security Hub with default standards enabled"
+      - "PCI-DSS standard may be enabled"
+      - "continuous compliance monitoring"
+
+  service_linked_roles:
+    enabled: true
+    expectations:
+      - "service linked roles for compliance services"
+      - "enables AWS Config, Security Hub, GuardDuty integration"
+
+  regions:
+    expected_regions:
+      - eu-central-1
+      - eu-west-1
+      - us-east-1
+    expectations:
+      - "multi-region deployment"
+      - "disaster recovery capable"

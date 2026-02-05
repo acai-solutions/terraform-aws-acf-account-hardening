@@ -1,0 +1,68 @@
+# Expected validation manifest for account-cluster-1: Standard Enterprise
+# Use Case: Default enterprise configuration with balanced security settings
+
+use_case: "Standard Enterprise"
+description: |
+  Default enterprise configuration with balanced security settings.
+  Password policy with CIS AWS benchmarks, EBS encryption in all regions,
+  GuardDuty with S3 and Kubernetes monitoring, S3 public access block,
+  and Security Hub CSPM.
+
+expected_files:
+  - main.tf
+  - aws_account_password_policy.tf
+  - ebs_encryption.tf
+  - guardduty.tf
+  - s3_account_level_pab.tf
+  - security_hub_cspm.tf
+  - import.part which is empty
+
+validations:
+  password_policy:
+    enabled: true
+    expectations:
+      - "minimum password length of at least 14 characters"
+      - "password reuse prevention enabled"
+      - "requires uppercase, lowercase, numbers, and symbols"
+      - "max password age set (not unlimited)"
+
+  ebs_encryption:
+    enabled: true
+    expectations:
+      - "EBS encryption enabled by default across multiple regions"
+      - "covers primary region eu-central-1"
+      - "covers secondary regions eu-west-1 and us-east-1"
+
+  guardduty:
+    enabled: true
+    expectations:
+      - "GuardDuty detector configured"
+      - "S3 log monitoring enabled"
+      - "Kubernetes audit log monitoring enabled"
+      - "EBS volume malware protection enabled"
+      - "aggregation to central security account configured"
+
+  s3_public_access_block:
+    enabled: true
+    expectations:
+      - "S3 account-level public access block resource exists"
+      - "blocks public ACLs"
+      - "blocks public policy"
+      - "ignores public ACLs"
+      - "restricts public buckets"
+
+  security_hub_cspm:
+    enabled: true
+    expectations:
+      - "Security Hub enabled"
+      - "aggregation to central security account configured"
+      - "control finding generator set to SECURITY_CONTROL"
+
+  regions:
+    expected_regions:
+      - eu-central-1
+      - eu-west-1
+      - us-east-1
+    expectations:
+      - "multi-region deployment covering EU and US"
+      - "provider aliases for each region"
