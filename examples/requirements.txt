@@ -1,5 +1,0 @@
-# Python dependencies for LLM-based validation
-# Install with: pip install -r requirements.txt
-
-openai>=1.0.0
-pyyaml>=6.0

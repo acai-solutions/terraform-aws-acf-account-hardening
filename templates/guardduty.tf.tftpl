@@ -96,4 +96,78 @@ resource "aws_guardduty_detector_feature" "ebs_protection_${lower(replace(region
 }
 %{ endif}
 
+%{ if enable_rds_login_events ~}
+resource "aws_guardduty_detector_feature" "rds_login_events_${lower(replace(region, "-", "_"))}" {
+  count = contains(local.excluded_accounts_guardduty, local.current_account_id) ? 0 : 1
+
+  detector_id = aws_guardduty_detector.gd_detector_${lower(replace(region, "-", "_"))}[0].id
+  name        = "RDS_LOGIN_EVENTS"
+  status      = "ENABLED"
+}
+%{ else }
+resource "aws_guardduty_detector_feature" "rds_login_events_${lower(replace(region, "-", "_"))}" {
+  count = contains(local.excluded_accounts_guardduty, local.current_account_id) ? 0 : 1
+
+  detector_id = aws_guardduty_detector.gd_detector_${lower(replace(region, "-", "_"))}[0].id
+  name        = "RDS_LOGIN_EVENTS"
+  status      = "DISABLED"
+}
+%{ endif}
+
+%{ if enable_lambda_network_logs ~}
+resource "aws_guardduty_detector_feature" "lambda_network_logs_${lower(replace(region, "-", "_"))}" {
+  count = contains(local.excluded_accounts_guardduty, local.current_account_id) ? 0 : 1
+
+  detector_id = aws_guardduty_detector.gd_detector_${lower(replace(region, "-", "_"))}[0].id
+  name        = "LAMBDA_NETWORK_LOGS"
+  status      = "ENABLED"
+}
+%{ else }
+resource "aws_guardduty_detector_feature" "lambda_network_logs_${lower(replace(region, "-", "_"))}" {
+  count = contains(local.excluded_accounts_guardduty, local.current_account_id) ? 0 : 1
+
+  detector_id = aws_guardduty_detector.gd_detector_${lower(replace(region, "-", "_"))}[0].id
+  name        = "LAMBDA_NETWORK_LOGS"
+  status      = "DISABLED"
+}
+%{ endif}
+
+%{ if enable_runtime_monitoring ~}
+resource "aws_guardduty_detector_feature" "runtime_monitoring_${lower(replace(region, "-", "_"))}" {
+  count = contains(local.excluded_accounts_guardduty, local.current_account_id) ? 0 : 1
+
+  detector_id = aws_guardduty_detector.gd_detector_${lower(replace(region, "-", "_"))}[0].id
+  name        = "RUNTIME_MONITORING"
+  status      = "ENABLED"
+
+  additional_configuration {
+    name   = "ECS_FARGATE_AGENT_MANAGEMENT"
+    status = "ENABLED"
+  }
+
+  additional_configuration {
+    name   = "EC2_AGENT_MANAGEMENT"
+    status = "ENABLED"
+  }
+}
+%{ else }
+resource "aws_guardduty_detector_feature" "runtime_monitoring_${lower(replace(region, "-", "_"))}" {
+  count = contains(local.excluded_accounts_guardduty, local.current_account_id) ? 0 : 1
+
+  detector_id = aws_guardduty_detector.gd_detector_${lower(replace(region, "-", "_"))}[0].id
+  name        = "RUNTIME_MONITORING"
+  status      = "DISABLED"
+
+  additional_configuration {
+    name   = "ECS_FARGATE_AGENT_MANAGEMENT"
+    status = "DISABLED"
+  }
+
+  additional_configuration {
+    name   = "EC2_AGENT_MANAGEMENT"
+    status = "DISABLED"
+  }
+}
+%{ endif}
+
 %{ endfor ~}

@@ -32,7 +32,7 @@ locals {
         "module_provider" = "ACAI GmbH",
         "module_name"     = "terraform-aws-acf-account-hardening",
         "module_source"   = "github.com/acai-solutions/terraform-aws-acf-hardening",
-        "module_version"  = /*inject_version_start*/ "1.0.0" /*inject_version_end*/
+        "module_version"  = /*inject_version_start*/ "1.3.0" /*inject_version_end*/
       }
     )
   })
@@ -70,7 +70,7 @@ locals {
         ebs_encryption_regions                       = local.regions.ebs_encryption
         guardduty_enabled                            = var.account_hardening_settings.guardduty != null ? true : false
         guardduty_regions                            = local.regions.guardduty
-        s3_account_level_public_access_block_enabled = var.account_hardening_settings.guardduty != null ? var.account_hardening_settings.guardduty.enable_s3_logs : null
+        s3_account_level_public_access_block_enabled = var.account_hardening_settings.s3_account_level_public_access_block != null ? true : false
         security_hub_cspm_enabled                    = var.account_hardening_settings.security_hub_cspm != null ? true : false
         security_hub_cspm_regions                    = local.regions.security_hub_cspm
       })
@@ -117,6 +117,9 @@ locals {
         enable_s3_logs               = var.account_hardening_settings.guardduty.enable_s3_logs
         enable_kubernetes            = var.account_hardening_settings.guardduty.enable_kubernetes
         enable_ebs_volume_protection = var.account_hardening_settings.guardduty.enable_ebs_volume_protection
+        enable_rds_login_events      = var.account_hardening_settings.guardduty.enable_rds_login_events
+        enable_lambda_network_logs   = var.account_hardening_settings.guardduty.enable_lambda_network_logs
+        enable_runtime_monitoring    = var.account_hardening_settings.guardduty.enable_runtime_monitoring
       })
     },
     var.account_hardening_settings.s3_account_level_public_access_block == null ? {} : {

@@ -32,8 +32,8 @@ variable "account_hardening_settings" {
         # compliant with CIS AWS 
         excluded_accounts              = optional(list(string), []) # list of account-ids that will be exempted from Password Policy
         minimum_password_length        = optional(number, 16)
-        max_password_age               = optional(number, 90) # Recommended: 60 to 90 days
-        password_reuse_prevention      = optional(number, 5)  # Recommended: prevent last 5 to 10 passwords
+        max_password_age               = optional(number, 90) 
+        password_reuse_prevention      = optional(number, 24) 
         require_lowercase_characters   = optional(bool, true)
         require_numbers                = optional(bool, true)
         require_uppercase_characters   = optional(bool, true)
@@ -61,6 +61,9 @@ variable "account_hardening_settings" {
         enable_s3_logs               = optional(bool, true)
         enable_kubernetes            = optional(bool, true)
         enable_ebs_volume_protection = optional(bool, true)
+        enable_rds_login_events      = optional(bool, true)
+        enable_lambda_network_logs   = optional(bool, true)
+        enable_runtime_monitoring    = optional(bool, false) # Only one of enable_kubernetes or enable_runtime_monitoring can be true
       }), null
     )
     s3_account_level_public_access_block = optional(
@@ -74,7 +77,7 @@ variable "account_hardening_settings" {
         aggregation_account_id     = string
         secondary_regions_override = optional(list(string), null)
         enable_default_standards   = optional(bool, false)
-        auto_enable_controls       = optional(bool, false)
+        auto_enable_controls       = optional(bool, true)
         control_finding_generator  = optional(string, "SECURITY_CONTROL")
       }), null
     )
@@ -85,6 +88,14 @@ variable "account_hardening_settings" {
       }), null
     )
   })
+
+  validation {
+    condition = var.account_hardening_settings.guardduty == null ? true : !(
+      var.account_hardening_settings.guardduty.enable_kubernetes == true &&
+      var.account_hardening_settings.guardduty.enable_runtime_monitoring == true
+    )
+    error_message = "GuardDuty: Only one of 'enable_kubernetes' (EKS_RUNTIME_MONITORING) or 'enable_runtime_monitoring' (RUNTIME_MONITORING) can be enabled at a time. Both cannot be true simultaneously."
+  }
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
