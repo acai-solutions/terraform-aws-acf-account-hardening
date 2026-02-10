@@ -1,0 +1,71 @@
+# Expected validation manifest for account-cluster-9: With Exclusions
+# Use Case: Organization with legacy accounts requiring exclusions
+
+use_case: "With Exclusions"
+description: |
+  Organization with legacy accounts requiring exclusions.
+  Multiple account exclusions per feature.
+  Different exclusion lists per security control.
+  Useful for gradual rollout.
+
+expected_files:
+  - main.tf
+  - aws_account_password_policy.tf
+  - ebs_encryption.tf
+  - guardduty.tf
+  - s3_account_level_pab.tf
+  - security_hub_cspm.tf
+
+validations:
+  password_policy:
+    enabled: true
+    expectations:
+      - "password policy with exclusion list for legacy accounts"
+      - "locals block should contain excluded account IDs"
+      - "count or conditional logic based on exclusion"
+
+  ebs_encryption:
+    enabled: true
+    expectations:
+      - "EBS encryption with exclusion support"
+      - "some accounts excluded (HSM-managed)"
+      - "exclusion logic in locals or count"
+
+  guardduty:
+    enabled: true
+    expectations:
+      - "GuardDuty with exclusions"
+      - "sandbox accounts excluded for cost saving"
+      - "exclusion list in configuration"
+
+  s3_public_access_block:
+    enabled: true
+    expectations:
+      - "S3 public access block with exclusions"
+      - "accounts with static websites excluded"
+      - "multiple exclusion accounts"
+
+  security_hub_cspm:
+    enabled: true
+    expectations:
+      - "Security Hub with exclusions"
+      - "SOC accounts managed separately"
+
+  exclusions:
+    expectations:
+      - "different exclusion lists per feature"
+      - "locals block defining exclusion lists"
+      - "password_policy_exclusions list"
+      - "ebs_encryption_exclusions list"
+      - "s3_public_access_exclusions list"
+      - "guardduty_exclusions list"
+      - "security_hub_exclusions list"
+
+  regions:
+    expected_regions:
+      - eu-central-1
+      - eu-west-1
+      - us-east-1
+    expectations:
+      - "standard multi-region deployment"
+      - "exclusions apply across all regions"

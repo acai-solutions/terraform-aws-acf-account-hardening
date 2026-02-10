@@ -1,0 +1,31 @@
+locals {
+  excluded_accounts_support_access_role = [
+%{ for i, account_id in excluded_accounts ~}
+    "${account_id}",
+%{ endfor }  ]
+}
+
+resource "aws_iam_role" "aws_support_access_role" {
+  count = contains(local.excluded_accounts_support_access_role, local.current_account_id) ? 0 : 1
+
+  name               = "AWS_Support_Access_Role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action    = "sts:AssumeRole"
+      Effect    = "Allow"
+      Principal = {
+        AWS = "${trust_principal_string}"
+      }
+    }]
+  })
+
+  tags = local.tags
+}
+
+resource "aws_iam_role_policy_attachment" "aws_support_access_policy" {
+  count = contains(local.excluded_accounts_support_access_role, local.current_account_id) ? 0 : 1
+
+  role       = aws_iam_role.aws_support_access_role[0].name
+  policy_arn = "arn:aws:iam::aws:policy/AWSSupportAccess"  
+}

@@ -1,0 +1,40 @@
+
+terraform import module.account_hardening_import.aws_iam_account_password_policy.account_password_policy iam-account-password-policy
+
+
+
+terraform import module.account_hardening_import.aws_ebs_encryption_by_default.default_ebs_encryption_eu_central_1 default@eu-central-1
+terraform import module.account_hardening_import.aws_ebs_encryption_by_default.default_ebs_encryption_eu_west_1 default@eu-west-1
+terraform import module.account_hardening_import.aws_ebs_encryption_by_default.default_ebs_encryption_us_east_1 default@us-east-1
+
+
+
+terraform state rm module.account_hardening_import.aws_ebs_encryption_by_default.default_ebs_encryption_eu_central_1
+terraform import module.account_hardening_import.aws_ebs_encryption_by_default.default_ebs_encryption_eu_central_1 default@eu-central-1
+terraform state rm module.account_hardening_import.aws_ebs_encryption_by_default.default_ebs_encryption_eu_west_1
+terraform import module.account_hardening_import.aws_ebs_encryption_by_default.default_ebs_encryption_eu_west_1 default@eu-west-1
+terraform state rm module.account_hardening_import.aws_ebs_encryption_by_default.default_ebs_encryption_us_east_1
+terraform import module.account_hardening_import.aws_ebs_encryption_by_default.default_ebs_encryption_us_east_1 default@us-east-1
+
+
+
+aws guardduty list-detectors --query "DetectorIds[0]" --region eu-central-1 --profile member_session --output text -> $GD_DETECTOR_ID_EU_CENTRAL_1
+terraform import module.account_hardening_import.aws_guardduty_detector.gd_detector_eu_central_1 $GD_DETECTOR_ID_EU_CENTRAL_1@eu-central-1
+aws guardduty list-detectors --query "DetectorIds[0]" --region eu-west-1 --profile member_session --output text -> $GD_DETECTOR_ID_EU_WEST_1
+terraform import module.account_hardening_import.aws_guardduty_detector.gd_detector_eu_west_1 $GD_DETECTOR_ID_EU_WEST_1@eu-west-1
+aws guardduty list-detectors --query "DetectorIds[0]" --region us-east-1 --profile member_session --output text -> $GD_DETECTOR_ID_US_EAST_1
+terraform import module.account_hardening_import.aws_guardduty_detector.gd_detector_us_east_1 $GD_DETECTOR_ID_US_EAST_1@us-east-1
+
+
+
+terraform import module.account_hardening_import.aws_s3_account_public_access_block.s3_account_level_pab ${AWS::AccountId}
+
+
+
+terraform state rm module.account_hardening_import.aws_securityhub_account.security_hub_eu_central_1
+terraform import module.account_hardening_import.aws_securityhub_account.security_hub_eu_central_1 ${AWS::AccountId}@eu-central-1
+terraform state rm module.account_hardening_import.aws_securityhub_account.security_hub_eu_west_1
+terraform import module.account_hardening_import.aws_securityhub_account.security_hub_eu_west_1 ${AWS::AccountId}@eu-west-1
+terraform state rm module.account_hardening_import.aws_securityhub_account.security_hub_us_east_1
+terraform import module.account_hardening_import.aws_securityhub_account.security_hub_us_east_1 ${AWS::AccountId}@us-east-1
+

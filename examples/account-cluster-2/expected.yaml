@@ -1,0 +1,62 @@
+# Expected validation manifest for account-cluster-2: Multi-Region Enterprise
+# Use Case: Enterprise with presence in EU, US, and APAC regions
+
+use_case: "Multi-Region Enterprise"
+description: |
+  Enterprise with presence in EU, US, and APAC regions.
+  Extended to Asia-Pacific regions, GuardDuty with S3 monitoring only 
+  (cost optimization), no S3 public access block (for legacy S3 websites).
+
+expected_files:
+  - main.tf
+  - aws_account_password_policy.tf
+  - ebs_encryption.tf
+  - guardduty.tf
+  - security_hub_cspm.tf
+  - import.part which is empty
+
+excluded_files:
+  - s3_account_level_pab.tf  # Not enabled - legacy S3 websites
+
+validations:
+  password_policy:
+    enabled: true
+    expectations:
+      - "password policy resource exists"
+      - "standard password requirements"
+
+  ebs_encryption:
+    enabled: true
+    expectations:
+      - "EBS encryption enabled across all regions"
+      - "covers EU, US, and APAC regions"
+      - "at least 5 regions configured"
+
+  guardduty:
+    enabled: true
+    expectations:
+      - "GuardDuty detector configured"
+      - "S3 log monitoring enabled"
+      - "Kubernetes monitoring may be disabled for cost optimization"
+      - "covers multiple regions including APAC"
+
+  s3_public_access_block:
+    enabled: false
+    reason: "Disabled for legacy S3 static websites"
+
+  security_hub_cspm:
+    enabled: true
+    expectations:
+      - "Security Hub enabled across all regions"
+      - "multi-region coverage"
+
+  regions:
+    expected_regions:
+      - eu-central-1
+      - eu-west-1
+      - us-east-1
+      - ap-southeast-1
+    expectations:
+      - "global deployment covering EU, US, and APAC"
+      - "at least 5 provider aliases"
+      - "Asia-Pacific region coverage"

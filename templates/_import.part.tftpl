@@ -1,0 +1,26 @@
+%{ if aws_account_password_policy_enabled }
+terraform import module.${tf_module_name}.aws_iam_account_password_policy.account_password_policy[0] iam-account-password-policy
+%{ endif }
+
+%{ if ebs_encryption_enabled }
+%{ for region in ebs_encryption_regions ~}
+terraform import module.${tf_module_name}.aws_ebs_encryption_by_default.default_ebs_encryption_${lower(replace(region, "-", "_"))}[0] default@${lower(region)}
+%{ endfor ~}
+%{ endif }
+
+%{ if guardduty_enabled }
+%{ for region in guardduty_regions ~}
+aws guardduty list-detectors --query "DetectorIds[0]" --region ${lower(region)} --profile member_session --output text -> $GD_DETECTOR_ID_${upper(replace(region, "-", "_"))}
+terraform import module.${tf_module_name}.aws_guardduty_detector.gd_detector_${lower(replace(region, "-", "_"))}[0] $GD_DETECTOR_ID_${upper(replace(region, "-", "_"))}@${lower(region)}
+%{ endfor ~}
+%{ endif }
+
+%{ if s3_account_level_public_access_block_enabled }
+terraform import module.${tf_module_name}.aws_s3_account_public_access_block.s3_account_level_pab[0] $${AWS::AccountId}
+%{ endif }
+
+%{ if security_hub_cspm_enabled }
+%{ for region in security_hub_cspm_regions ~}
+terraform import module.${tf_module_name}.aws_securityhub_account.security_hub_${lower(replace(region, "-", "_"))}[0] $${AWS::AccountId}@${lower(region)}
+%{ endfor ~}
+%{ endif }

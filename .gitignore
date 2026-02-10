@@ -36,3 +36,17 @@ override.tf.json
 
 *.tfx
 
+# Test results
+test-results.json
+examples/test-results.json
+
+# LLM Validation results
+validation-results.json
+examples/validation-results.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+

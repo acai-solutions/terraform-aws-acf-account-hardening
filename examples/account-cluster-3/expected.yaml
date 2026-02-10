@@ -1,0 +1,54 @@
+# Expected validation manifest for account-cluster-3: Minimal - Password Policy Only
+# Use Case: Accounts that only need IAM password policy enforcement
+
+use_case: "Minimal - Password Policy Only"
+description: |
+  Accounts that only need IAM password policy enforcement.
+  Only password policy enabled, single region deployment.
+  Useful for legacy accounts transitioning to full hardening.
+
+expected_files:
+  - main.tf
+  - aws_account_password_policy.tf
+  - import.part which is empty
+
+excluded_files:
+  - ebs_encryption.tf
+  - guardduty.tf
+  - s3_account_level_pab.tf
+  - security_hub_cspm.tf
+  - service_linked_role.tf
+  - aws_support_access_role.tf
+
+validations:
+  password_policy:
+    enabled: true
+    expectations:
+      - "password policy resource exists"
+      - "minimum password length configured"
+      - "requires uppercase, lowercase, numbers, and symbols"
+      - "password reuse prevention enabled"
+
+  ebs_encryption:
+    enabled: false
+    reason: "Minimal configuration - only password policy"
+
+  guardduty:
+    enabled: false
+    reason: "Minimal configuration - only password policy"
+
+  s3_public_access_block:
+    enabled: false
+    reason: "Minimal configuration - only password policy"
+
+  security_hub_cspm:
+    enabled: false
+    reason: "Minimal configuration - only password policy"
+
+  regions:
+    expected_regions:
+      - eu-central-1
+    expectations:
+      - "single region deployment"
+      - "only primary region configured"
+      - "no secondary regions"

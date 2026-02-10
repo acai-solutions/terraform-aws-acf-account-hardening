@@ -1,0 +1,19 @@
+locals {
+  excluded_accounts_securityhub = [
+    "${aggregation_account_id}",
+%{ for i, account_id in excluded_accounts ~}
+    "${account_id}",
+%{ endfor }  ]
+}
+
+%{ for region in all_regions ~}
+resource "aws_securityhub_account" "security_hub_${lower(replace(region, "-", "_"))}" {
+  count = contains(local.excluded_accounts_securityhub, local.current_account_id) ? 0 : 1
+
+  region   = "${region}"
+  enable_default_standards  = ${enable_default_standards}
+  auto_enable_controls      = ${auto_enable_controls}
+  control_finding_generator = "${control_finding_generator}"
+}
+
+%{ endfor ~}

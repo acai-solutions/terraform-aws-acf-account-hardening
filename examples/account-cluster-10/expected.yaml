@@ -1,0 +1,70 @@
+# Expected validation manifest for account-cluster-10: Import Existing Resources
+# Use Case: Accounts with existing security resources to import
+
+use_case: "Import Existing Resources"
+description: |
+  Accounts with existing security resources to import.
+  import_resources = true generates import scripts.
+  Import scripts in import.part file.
+  Useful for brownfield deployments.
+
+expected_files:
+  - main.tf
+  - aws_account_password_policy.tf
+  - ebs_encryption.tf
+  - guardduty.tf
+  - s3_account_level_pab.tf
+  - security_hub_cspm.tf
+  - import.part.tftpl
+
+validations:
+  password_policy:
+    enabled: true
+    expectations:
+      - "password policy resource exists"
+      - "standard enterprise settings"
+
+  ebs_encryption:
+    enabled: true
+    expectations:
+      - "EBS encryption enabled"
+      - "multi-region coverage"
+
+  guardduty:
+    enabled: true
+    expectations:
+      - "GuardDuty detector configured"
+      - "import commands for existing detector"
+
+  s3_public_access_block:
+    enabled: true
+    expectations:
+      - "S3 public access block configured"
+
+  security_hub_cspm:
+    enabled: true
+    expectations:
+      - "Security Hub enabled"
+
+  import_resources:
+    enabled: true
+    expectations:
+      - "import_resources flag set to true"
+      - "import.part file generated"
+      - "contains terraform import commands"
+      - "import commands for password policy"
+      - "import commands for GuardDuty detector"
+      - "import commands for EBS encryption defaults"
+      - "import commands for S3 public access block"
+      - "import commands for Security Hub"
+      - "AWS CLI commands to query existing resource IDs"
+      - "Import commands match existing resources in the terraform files"
+
+  regions:
+    expected_regions:
+      - eu-central-1
+      - eu-west-1
+      - us-east-1
+    expectations:
+      - "multi-region deployment"
+      - "import commands for each region"

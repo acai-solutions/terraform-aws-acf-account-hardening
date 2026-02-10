@@ -1,0 +1,63 @@
+# Expected validation manifest for account-cluster-4: EU-Only GDPR Compliant
+# Use Case: European accounts with GDPR compliance requirements
+
+use_case: "EU-Only GDPR Compliant"
+description: |
+  European accounts with GDPR compliance requirements.
+  Only EU regions (eu-central-1, eu-west-1, eu-north-1).
+  All security features enabled, strict password policy.
+
+expected_files:
+  - main.tf
+  - aws_account_password_policy.tf
+  - ebs_encryption.tf
+  - guardduty.tf
+  - s3_account_level_pab.tf
+  - security_hub_cspm.tf
+  - import.part which is empty
+
+validations:
+  password_policy:
+    enabled: true
+    expectations:
+      - "password policy with stricter settings"
+      - "shorter max password age (around 14-30 days preferred for GDPR)"
+      - "strong password requirements"
+
+  ebs_encryption:
+    enabled: true
+    expectations:
+      - "EBS encryption enabled"
+      - "only EU regions (NO us-east-1, NO ap- regions)"
+      - "eu-central-1 covered"
+      - "eu-west-1 covered"
+      - "eu-north-1 covered"
+
+  guardduty:
+    enabled: true
+    expectations:
+      - "GuardDuty enabled in EU regions only"
+      - "all protection features enabled"
+
+  s3_public_access_block:
+    enabled: true
+    expectations:
+      - "S3 public access block enabled"
+      - "strict settings for GDPR compliance"
+
+  security_hub_cspm:
+    enabled: true
+    expectations:
+      - "Security Hub enabled in EU regions"
+
+  regions:
+    expected_regions:
+      - eu-central-1
+      - eu-west-1
+      - eu-north-1
+      - us-east-1
+    expectations:
+      - "EU-only deployment for GDPR compliance"
+      - "NO US regions"
+      - "NO APAC regions"
+      - "data residency in Europe only"
