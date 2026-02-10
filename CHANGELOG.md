@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0](https://github.com/acai-solutions/terraform-aws-acf-account-hardening/compare/1.2.0...1.3.0) (2026-02-10)
+
+
+### Features
+
+* extend Security Hardening ([bd2725f](https://github.com/acai-solutions/terraform-aws-acf-account-hardening/commit/bd2725ff34719b29480a34c240c6bb461ef06995))
+
 ## [1.2.0](https://github.com/acai-solutions/terraform-aws-acf-account-hardening/compare/1.1.0...1.2.0) (2025-09-28)
 
 
