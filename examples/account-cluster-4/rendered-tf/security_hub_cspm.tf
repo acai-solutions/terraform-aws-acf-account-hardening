@@ -7,7 +7,7 @@ locals {
 resource "aws_securityhub_account" "security_hub_eu_central_1" {
   count = contains(local.excluded_accounts_securityhub, local.current_account_id) ? 0 : 1
 
-  region   = "eu-central-1"
+  region                    = "eu-central-1"
   enable_default_standards  = true
   auto_enable_controls      = true
   control_finding_generator = "SECURITY_CONTROL"
@@ -16,7 +16,7 @@ resource "aws_securityhub_account" "security_hub_eu_central_1" {
 resource "aws_securityhub_account" "security_hub_eu_north_1" {
   count = contains(local.excluded_accounts_securityhub, local.current_account_id) ? 0 : 1
 
-  region   = "eu-north-1"
+  region                    = "eu-north-1"
   enable_default_standards  = true
   auto_enable_controls      = true
   control_finding_generator = "SECURITY_CONTROL"
@@ -25,7 +25,7 @@ resource "aws_securityhub_account" "security_hub_eu_north_1" {
 resource "aws_securityhub_account" "security_hub_eu_west_1" {
   count = contains(local.excluded_accounts_securityhub, local.current_account_id) ? 0 : 1
 
-  region   = "eu-west-1"
+  region                    = "eu-west-1"
   enable_default_standards  = true
   auto_enable_controls      = true
   control_finding_generator = "SECURITY_CONTROL"
@@ -34,7 +34,7 @@ resource "aws_securityhub_account" "security_hub_eu_west_1" {
 resource "aws_securityhub_account" "security_hub_eu_west_2" {
   count = contains(local.excluded_accounts_securityhub, local.current_account_id) ? 0 : 1
 
-  region   = "eu-west-2"
+  region                    = "eu-west-2"
   enable_default_standards  = true
   auto_enable_controls      = true
   control_finding_generator = "SECURITY_CONTROL"
@@ -43,7 +43,7 @@ resource "aws_securityhub_account" "security_hub_eu_west_2" {
 resource "aws_securityhub_account" "security_hub_eu_west_3" {
   count = contains(local.excluded_accounts_securityhub, local.current_account_id) ? 0 : 1
 
-  region   = "eu-west-3"
+  region                    = "eu-west-3"
   enable_default_standards  = true
   auto_enable_controls      = true
   control_finding_generator = "SECURITY_CONTROL"

@@ -25,14 +25,14 @@ data "aws_caller_identity" "current" {}
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
   tags = {
-    "CostCenter" = "dev-ops",
-    "Environment" = "sandbox",
-    "ManagedBy" = "terraform",
-    "UseCase" = "development",
-    "module_name" = "terraform-aws-acf-account-hardening",
+    "CostCenter"      = "dev-ops",
+    "Environment"     = "sandbox",
+    "ManagedBy"       = "terraform",
+    "UseCase"         = "development",
+    "module_name"     = "terraform-aws-acf-account-hardening",
     "module_provider" = "ACAI GmbH",
-    "module_source" = "github.com/acai-solutions/terraform-aws-acf-hardening",
-    "module_version" = "1.0.0"
+    "module_source"   = "github.com/acai-solutions/terraform-aws-acf-hardening",
+    "module_version"  = "1.0.0"
 
   }
   current_account_id = data.aws_caller_identity.current.account_id

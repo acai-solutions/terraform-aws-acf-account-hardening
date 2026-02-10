@@ -29,7 +29,7 @@ module "account_hardening" {
     terraform_version = ">= 1.3.10"
     target_regions = {
       primary_region    = "eu-central-1"
-      secondary_regions = ["eu-west-1", "us-east-1"]  # Default for most features
+      secondary_regions = ["eu-west-1", "us-east-1"] # Default for most features
     }
     import_resources = false
   }
@@ -49,13 +49,13 @@ module "account_hardening" {
 
     # EBS Encryption - EU only (GDPR compliance, no US data storage)
     ebs_encryption = {
-      secondary_regions_override = ["eu-west-1", "eu-north-1"]  # Override: EU only, no us-east-1
+      secondary_regions_override = ["eu-west-1", "eu-north-1"] # Override: EU only, no us-east-1
     }
 
     # GuardDuty - Extended to APAC for comprehensive threat monitoring
     guardduty = {
       aggregation_account_id       = "123456789012"
-      secondary_regions_override   = ["eu-west-1", "us-east-1", "ap-southeast-1", "ap-northeast-1"]  # Extended to APAC
+      secondary_regions_override   = ["eu-west-1", "us-east-1", "ap-southeast-1", "ap-northeast-1"] # Extended to APAC
       enable_s3_logs               = true
       enable_kubernetes            = true
       enable_ebs_volume_protection = true
@@ -67,7 +67,7 @@ module "account_hardening" {
     # Security Hub - primary region only (cost optimization)
     security_hub_cspm = {
       aggregation_account_id     = "123456789012"
-      secondary_regions_override = []  # Empty = primary region only
+      secondary_regions_override = [] # Empty = primary region only
       enable_default_standards   = false
       auto_enable_controls       = false
       control_finding_generator  = "SECURITY_CONTROL"
@@ -110,9 +110,9 @@ output "rendered_files" {
 output "region_configuration" {
   description = "Shows the different region configurations per feature"
   value = {
-    default_regions         = ["eu-central-1", "eu-west-1", "us-east-1"]
-    ebs_encryption_regions  = ["eu-central-1", "eu-west-1", "eu-north-1"]
-    guardduty_regions       = ["eu-central-1", "eu-west-1", "us-east-1", "ap-southeast-1", "ap-northeast-1"]
-    security_hub_regions    = ["eu-central-1"]  # primary only
+    default_regions        = ["eu-central-1", "eu-west-1", "us-east-1"]
+    ebs_encryption_regions = ["eu-central-1", "eu-west-1", "eu-north-1"]
+    guardduty_regions      = ["eu-central-1", "eu-west-1", "us-east-1", "ap-southeast-1", "ap-northeast-1"]
+    security_hub_regions   = ["eu-central-1"] # primary only
   }
 }

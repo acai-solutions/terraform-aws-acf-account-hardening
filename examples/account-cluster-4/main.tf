@@ -24,8 +24,8 @@ module "account_hardening" {
   account_hardening_settings = {
     aws_account_password_policy = {
       minimum_password_length        = 16
-      max_password_age               = 60  # Stricter for GDPR
-      password_reuse_prevention      = 10  # Stricter for GDPR
+      max_password_age               = 60 # Stricter for GDPR
+      password_reuse_prevention      = 10 # Stricter for GDPR
       require_lowercase_characters   = true
       require_numbers                = true
       require_uppercase_characters   = true
@@ -46,7 +46,7 @@ module "account_hardening" {
     }
     security_hub_cspm = {
       aggregation_account_id    = "111111111111"
-      enable_default_standards  = true  # Enable for compliance
+      enable_default_standards  = true # Enable for compliance
       auto_enable_controls      = true
       control_finding_generator = "SECURITY_CONTROL"
     }

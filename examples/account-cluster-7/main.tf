@@ -14,7 +14,7 @@ module "account_hardening" {
   provisio_settings = {
     package_name         = "account-hardening-prod-highsec"
     override_module_name = "prod_security"
-    terraform_version    = ">= 1.5.0"  # Require newer Terraform
+    terraform_version    = ">= 1.5.0" # Require newer Terraform
     provider_aws_version = ">= 6.00"
     target_regions = {
       primary_region    = "eu-central-1"
@@ -26,9 +26,9 @@ module "account_hardening" {
   account_hardening_settings = {
     # Strictest password policy
     aws_account_password_policy = {
-      minimum_password_length        = 20  # Maximum security
-      max_password_age               = 60  # Strict rotation
-      password_reuse_prevention      = 10  # Maximum history
+      minimum_password_length        = 20 # Maximum security
+      max_password_age               = 60 # Strict rotation
+      password_reuse_prevention      = 10 # Maximum history
       require_lowercase_characters   = true
       require_numbers                = true
       require_uppercase_characters   = true
@@ -52,8 +52,8 @@ module "account_hardening" {
     }
     security_hub_cspm = {
       aggregation_account_id    = "111111111111"
-      enable_default_standards  = true  # Enable all standards
-      auto_enable_controls      = true  # Auto-enable new controls
+      enable_default_standards  = true # Enable all standards
+      auto_enable_controls      = true # Auto-enable new controls
       control_finding_generator = "SECURITY_CONTROL"
     }
     service_linked_roles = {
@@ -68,11 +68,11 @@ module "account_hardening" {
   }
 
   resource_tags = {
-    Environment    = "production"
-    ManagedBy      = "terraform"
-    UseCase        = "high-security"
-    SecurityLevel  = "critical"
-    DataClass      = "confidential"
+    Environment   = "production"
+    ManagedBy     = "terraform"
+    UseCase       = "high-security"
+    SecurityLevel = "critical"
+    DataClass     = "confidential"
   }
 }
 

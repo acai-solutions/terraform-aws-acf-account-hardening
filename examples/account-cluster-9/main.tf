@@ -11,31 +11,31 @@ terraform {
 locals {
   # Legacy accounts that cannot have password policy enforced
   legacy_password_policy_exclusions = [
-    "111111111111",  # Legacy Identity Account
-    "222222222222",  # External Partner Account
+    "111111111111", # Legacy Identity Account
+    "222222222222", # External Partner Account
   ]
 
   # Accounts with existing EBS encryption key management
   ebs_encryption_exclusions = [
-    "333333333333",  # HSM-managed encryption account
+    "333333333333", # HSM-managed encryption account
   ]
 
   # Accounts that need public S3 buckets (static websites)
   s3_public_access_exclusions = [
-    "444444444444",  # Marketing Static Website
-    "555555555555",  # Public Documentation
-    "666666666666",  # Open Data Portal
+    "444444444444", # Marketing Static Website
+    "555555555555", # Public Documentation
+    "666666666666", # Open Data Portal
   ]
 
   # Sandbox accounts excluded from GuardDuty (cost saving)
   guardduty_exclusions = [
-    "777777777777",  # Dev Sandbox 1
-    "888888888888",  # Dev Sandbox 2
+    "777777777777", # Dev Sandbox 1
+    "888888888888", # Dev Sandbox 2
   ]
 
   # Accounts excluded from Security Hub (managed separately)
   security_hub_exclusions = [
-    "999999999999",  # Security Operations Center
+    "999999999999", # Security Operations Center
   ]
 }
 
@@ -124,10 +124,10 @@ output "rendered_files" {
 
 output "exclusion_summary" {
   value = {
-    password_policy_exclusions = length(local.legacy_password_policy_exclusions)
-    ebs_encryption_exclusions  = length(local.ebs_encryption_exclusions)
+    password_policy_exclusions  = length(local.legacy_password_policy_exclusions)
+    ebs_encryption_exclusions   = length(local.ebs_encryption_exclusions)
     s3_public_access_exclusions = length(local.s3_public_access_exclusions)
-    guardduty_exclusions       = length(local.guardduty_exclusions)
-    security_hub_exclusions    = length(local.security_hub_exclusions)
+    guardduty_exclusions        = length(local.guardduty_exclusions)
+    security_hub_exclusions     = length(local.security_hub_exclusions)
   }
 }

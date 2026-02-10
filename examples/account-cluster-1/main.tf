@@ -44,8 +44,8 @@ module "account_hardening" {
     s3_account_level_public_access_block = {
       excluded_accounts = [
         "890123456789",
-        "789012345678",        
-    ]
+        "789012345678",
+      ]
     }
     security_hub_cspm = {
       aggregation_account_id    = "123456789012"
