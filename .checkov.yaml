@@ -1,13 +1,3 @@
 skip-path:
-  - examples/**/*
+  - examples/
 
-# Alternatively, if specific checks need to be skipped only in examples:
-# skip-check:
-#   - check: CKV_AWS_10
-#     reason: "Examples demonstrate various configurations including non-compliant password lengths for testing purposes"
-#   - check: CKV_AWS_13
-#     reason: "Examples demonstrate various configurations including different password reuse policies for testing purposes"
-#   - check: CKV_AWS_14
-#     reason: "Examples demonstrate various configurations including password policies without symbol requirements for testing purposes"
-#   - check: CKV_AWS_61
-#     reason: "Examples demonstrate support role configurations that intentionally allow assume role permissions for testing purposes"
