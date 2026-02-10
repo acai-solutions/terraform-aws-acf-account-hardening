@@ -32,8 +32,8 @@ variable "account_hardening_settings" {
         # compliant with CIS AWS 
         excluded_accounts              = optional(list(string), []) # list of account-ids that will be exempted from Password Policy
         minimum_password_length        = optional(number, 16)
-        max_password_age               = optional(number, 90) 
-        password_reuse_prevention      = optional(number, 24) 
+        max_password_age               = optional(number, 90)
+        password_reuse_prevention      = optional(number, 24)
         require_lowercase_characters   = optional(bool, true)
         require_numbers                = optional(bool, true)
         require_uppercase_characters   = optional(bool, true)

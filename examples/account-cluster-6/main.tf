@@ -16,7 +16,7 @@ module "account_hardening" {
     terraform_version = ">= 1.3.10"
     target_regions = {
       primary_region    = "eu-central-1"
-      secondary_regions = []  # Single region for cost savings
+      secondary_regions = [] # Single region for cost savings
     }
     import_resources = false
   }

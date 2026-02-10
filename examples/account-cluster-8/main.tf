@@ -25,9 +25,9 @@ module "account_hardening" {
     # PCI-DSS compliant password policy
     # Reference: PCI DSS Requirement 8.2
     aws_account_password_policy = {
-      minimum_password_length        = 12  # PCI DSS minimum (was 7, now 12 recommended)
-      max_password_age               = 90  # PCI DSS Requirement 8.2.4
-      password_reuse_prevention      = 4   # PCI DSS Requirement 8.2.5
+      minimum_password_length        = 12 # PCI DSS minimum (was 7, now 12 recommended)
+      max_password_age               = 90 # PCI DSS Requirement 8.2.4
+      password_reuse_prevention      = 4  # PCI DSS Requirement 8.2.5
       require_lowercase_characters   = true
       require_numbers                = true
       require_uppercase_characters   = true
@@ -42,7 +42,7 @@ module "account_hardening" {
     # PCI DSS Requirement 10 - Logging and monitoring
     guardduty = {
       aggregation_account_id       = "111111111111"
-      enable_s3_logs               = true  # PCI DSS Requirement 10.2
+      enable_s3_logs               = true # PCI DSS Requirement 10.2
       enable_kubernetes            = true
       enable_ebs_volume_protection = true
     }
@@ -51,7 +51,7 @@ module "account_hardening" {
     # PCI DSS Requirement 11 - Security monitoring
     security_hub_cspm = {
       aggregation_account_id    = "111111111111"
-      enable_default_standards  = true  # Enable PCI DSS standard
+      enable_default_standards  = true # Enable PCI DSS standard
       auto_enable_controls      = true
       control_finding_generator = "SECURITY_CONTROL"
     }
@@ -66,12 +66,12 @@ module "account_hardening" {
   }
 
   resource_tags = {
-    Environment      = "production"
-    ManagedBy        = "terraform"
-    UseCase          = "pci-dss"
-    ComplianceType   = "PCI-DSS"
-    ComplianceLevel  = "Level-1"
-    CardholderData   = "in-scope"
+    Environment     = "production"
+    ManagedBy       = "terraform"
+    UseCase         = "pci-dss"
+    ComplianceType  = "PCI-DSS"
+    ComplianceLevel = "Level-1"
+    CardholderData  = "in-scope"
   }
 }
 
